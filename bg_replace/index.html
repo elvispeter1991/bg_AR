@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  
+  <title>AR Photobooth - Segmentation</title>
+    <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/selfie_segmentation.js" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+
+<div class="container">
+    <video class="input_video"></video>
+    <div class="canvas-container">
+    <canvas id="ss_canvas" class="output_canvas" width="1280px" height="720px">
+    </canvas>
+    <div class="ssbtn" id="screenshotbutton">
+      <button onclick="anim()" id="ssbtntn" class="btn"></button>
+    </div>
+    <!-- <p class="countdown" id="count"></p> -->
+     <h1 class="countdown" id="count"></h1>
+     <div class="ss_output" id="output_ss">
+      
+     </div>
+     <div class="ssbtn" id="screenshotbutton">
+      <button onclick="reload()" id="smail" class="ssmail"></button>
+    </div>
+    </div>
+    <div class="loading">
+      <!-- <div class="spinner"></div> -->
+      <div class="message">
+        Loading Experience
+      </div>
+    </div>
+    <!-- <a class="abs logo" href="http://www.mediapipe.dev" target="_blank">
+      <div style="display: flex;align-items: center;bottom: 0;right: 10px;">
+        <img class="logo" src="logo_white.png" alt="" style="
+          height: 50px;">
+        <span class="title">MediaPipe</span>
+      </div>
+    </a> -->
+    <!-- <div class="shoutout">
+      <div>
+        <a href="https://solutions.mediapipe.dev/selfie_segmentation">
+          Click here for more info
+        </a>
+      </div>
+    </div> -->
+  </div>
+  <div class="control-panel" style="visibility: hidden;">
+  </div>
+  <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript"
+    src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    var count = 3;
+    var countdowntext = document.getElementById("count");
+    
+    function anim() {
+    if (count > 0) {
+        countdowntext.innerHTML = count;
+        //console.log(count);
+        count--;
+        setTimeout(anim, 700);
+    }
+    else if(count == 0){
+        countdowntext.style.display = 'none';
+        ssshot();
+        document.getElementById('ssbtntn').style.display = 'none';
+        document.getElementById('smail').style.display = 'block';
+        //alert('hi')
+    }
+}
+
+function reload(){
+  window.location.reload();
+}
+  </script>
+
+  <script>
+      function ssshot() {
+            const screenshotTarget = document.getElementById("ss_canvas");
+            html2canvas(screenshotTarget,{useCORS: true,allowTaint: true}).then(canvas => {
+            	// to image as png use below line
+                 const base64image = canvas.toDataURL("image/png");
+            	// show the image in window use below line
+                 window.location.href = base64image;
+            	
+            	// screenshot appended to the body as canvas
+                //document.body.appendChild(canvas);
+                
+                var ssoutput = document.getElementById("output_ss");
+                ssoutput.appendChild(canvas);  
+                dataURL = canvas.toDataURL();  
+                // to print the screenshot in console use below line
+                 console.log(dataURL);
+                
+                // following line is optional and it is to save the screenshot
+                // on the server side. It initiates an ajax call
+               // pushScreenshotToServer(dataURL); 
+            }); 
+          } 
+        
+  </script>
+  
+<!-- partial -->
+  <script type="module" src="./script.js"></script>
+  
+
+
+</body>
+</html>
